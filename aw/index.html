@@ -8,51 +8,37 @@
     <style>
         /* BASE STYLES */
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f9; color: #333; margin: 0; padding: 0; }
-        header { background-color: #2c3e50; color: white; text-align: center; padding: 2rem 0; margin-bottom: 2rem; }
+        header { background-color: #2c3e50; color: white; text-align: center; padding: 2rem 0; margin-bottom: 2rem; position: relative; }
         main { max-width: 1000px; margin: 0 auto; padding: 0 1rem 5rem 1rem; }
         
+        /* NEW: AUTHENTICATION HEADER STYLES */
+        .auth-section { position: absolute; right: 2rem; top: 2rem; }
+        .auth-btn { background: white; color: #2c3e50; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: background 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .auth-btn:hover { background: #eef2f5; }
+        #welcomeMessage { color: white; margin-right: 15px; font-weight: 600; font-size: 0.95rem; }
+
+        /* AUTH TOGGLE TABS */
+        .auth-toggle { display: flex; gap: 10px; margin-bottom: 15px; }
+        .auth-toggle button { flex: 1; padding: 10px; border: none; background: #f0f0f5; border-radius: 6px; cursor: pointer; font-weight: bold; color: #555; transition: all 0.2s; }
+        .auth-toggle button.active { background: #2c3e50; color: white; }
+
         /* LIVE SEARCH BAR */
         .search-container { margin-bottom: 2rem; display: flex; justify-content: center; }
-        .search-container input {
-            width: 100%; max-width: 600px; padding: 14px 24px; border-radius: 30px;
-            border: 1px solid #ddd; font-size: 1.1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            transition: all 0.2s ease; outline: none;
-        }
+        .search-container input { width: 100%; max-width: 600px; padding: 14px 24px; border-radius: 30px; border: 1px solid #ddd; font-size: 1.1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: all 0.2s ease; outline: none; }
         .search-container input:focus { border-color: #2c3e50; box-shadow: 0 4px 15px rgba(44, 62, 80, 0.15); }
 
-        /* -------------------------------------- */
-        /* NEW: QUICK INDEX (HORIZONTAL BOXES)    */
-        /* -------------------------------------- */
+        /* QUICK INDEX */
         .quick-index-section { margin-bottom: 3rem; background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
         .quick-index-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 2px solid #f0f0f5; padding-bottom: 10px; }
         .quick-index-header h3 { margin: 0; color: #2c3e50; font-size: 1.2rem; }
-        
         #toggleIndexBtn { background: none; border: none; color: #3498db; cursor: pointer; font-weight: bold; font-size: 0.95rem; }
         #toggleIndexBtn:hover { text-decoration: underline; }
-        
-        .quick-index-grid { 
-            display: grid; 
-            /* Creates multiple columns of horizontal rectangles */
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); 
-            gap: 10px; 
-        }
-        
-        .index-item {
-            background: #f8f9fa; padding: 12px 16px; border-radius: 6px;
-            border-left: 4px solid #2c3e50; cursor: pointer;
-            /* These 3 lines force the text to stay on one line and add "..." */
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-            font-size: 0.95rem; font-weight: 600; color: #444;
-            transition: all 0.2s ease;
-        }
+        .quick-index-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
+        .index-item { background: #f8f9fa; padding: 12px 16px; border-radius: 6px; border-left: 4px solid #2c3e50; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 0.95rem; font-weight: 600; color: #444; transition: all 0.2s ease; }
         .index-item:hover { transform: translateX(4px); background: #eef2f5; color: #2c3e50; }
-
-        /* SECTION DIVIDER */
         .section-divider { margin: 2rem 0; border: none; border-top: 2px dashed #ddd; }
 
-        /* -------------------------------------- */
-        /* MODERN FLUID GRID & PREVIEW CARDS      */
-        /* -------------------------------------- */
+        /* MODERN FLUID GRID */
         #postsContainer { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
         article { background-color: white; padding: 1.2rem; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: flex; flex-direction: column; transition: transform 0.2s ease, box-shadow 0.2s ease; overflow: hidden; min-height: 200px; cursor: pointer; position: relative; }
         article:hover { transform: translateY(-3px); box-shadow: 0 8px 15px rgba(0,0,0,0.1); }
@@ -60,8 +46,11 @@
         .post-cover-image { width: 100%; aspect-ratio: 16/9; object-fit: cover; border-radius: 8px; margin-bottom: 1rem; flex-shrink: 0; }
         .post-content-preview { color: #555; line-height: 1.5; font-size: 0.95rem; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; margin-bottom: 3rem; }
         .post-content-preview img { display: none; }
-        .post-footer { position: absolute; bottom: 1.2rem; right: 1.2rem; display: flex; gap: 8px; opacity: 0; transition: opacity 0.3s ease; background: white; padding-left: 10px; border-radius: 20px;}
+        
+        /* NEW: Footer hidden by default, shown via JS if logged in */
+        .post-footer { position: absolute; bottom: 1.2rem; right: 1.2rem; display: none; gap: 8px; opacity: 0; transition: opacity 0.3s ease; background: white; padding-left: 10px; border-radius: 20px;}
         article:hover .post-footer { opacity: 1; }
+        
         .icon-btn { background: transparent; border: none; padding: 6px; border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: all 0.2s ease; }
         .edit-btn { color: #e67e22; } .edit-btn:hover { background-color: #fdf2e9; }
         .delete-btn { color: #e74c3c; } .delete-btn:hover { background-color: #fadbd8; }
@@ -77,8 +66,6 @@
         #readCover { width: 100%; max-height: 400px; object-fit: cover; border-radius: 12px; margin-bottom: 2rem; display: none; }
         #readContent { font-size: 1.1rem; line-height: 1.8; color: #333; }
         #readContent img { max-width: 100%; height: auto; border-radius: 8px; margin: 1rem 0; }
-
-        /* MORE POSTS SECTION */
         .more-posts-section { margin-top: 4rem; padding-top: 2rem; border-top: 2px solid #f0f0f5; }
         .more-posts-section h3 { margin-bottom: 1.5rem; color: #2c3e50; }
         .more-posts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; }
@@ -87,12 +74,9 @@
         .mini-card h4 { margin: 0 0 0.5rem 0; font-size: 1.1rem; }
         .mini-card p { margin: 0; font-size: 0.9rem; color: #666; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 
-        /* FAB & EDITOR MODAL */
-        #fabBtn { position: fixed; bottom: 40px; right: 40px; background-color: #2c3e50; color: white; border: none; border-radius: 50%; width: 60px; height: 60px; font-size: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; z-index: 1000; }
+        /* FAB & MODALS */
+        #fabBtn { position: fixed; bottom: 40px; right: 40px; background-color: #2c3e50; color: white; border: none; border-radius: 50%; width: 60px; height: 60px; font-size: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); cursor: pointer; display: none; align-items: center; justify-content: center; transition: all 0.2s ease; z-index: 1000; }
         #fabBtn:hover { transform: scale(1.1); background-color: #1a252f; }
-        #fabBtn::before { content: attr(data-tooltip); position: absolute; right: 75px; background-color: white; color: #2c3e50; padding: 8px 16px; border-radius: 20px; font-size: 14px; font-weight: 600; box-shadow: 0 4px 15px rgba(0,0,0,0.15); white-space: nowrap; opacity: 0; visibility: hidden; transform: translateX(15px); transition: all 0.3s ease; pointer-events: none; }
-        #fabBtn:hover::before { opacity: 1; visibility: visible; transform: translateX(0); }
-
         .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.6); display: flex; align-items: center; justify-content: center; z-index: 2000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
         .modal-overlay.active { opacity: 1; pointer-events: auto; }
         .form-section { background-color: white; padding: 2rem; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); display: flex; flex-direction: column; gap: 15px; width: 90%; max-width: 700px; transform: translateY(-20px); transition: transform 0.3s ease; }
@@ -101,19 +85,20 @@
         .modal-header h2 { margin: 0; font-size: 1.5rem; }
         .close-btn { background: none; border: none; font-size: 28px; cursor: pointer; color: #888; padding: 0; line-height: 1; }
         .close-btn:hover { color: #e74c3c; }
-
-        input[type="text"], input[type="file"] { padding: 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 1rem; font-family: inherit; }
+        input[type="text"], input[type="password"], input[type="file"] { padding: 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 1rem; font-family: inherit; }
         #editor-container { height: 250px; background-color: white; border-radius: 0 0 6px 6px; font-size: 1rem; font-family: inherit;}
         .ql-toolbar { border-radius: 6px 6px 0 0; background-color: #f8f9fa; }
         button.submit-btn { background-color: #2c3e50; color: white; border: none; padding: 12px 15px; border-radius: 6px; cursor: pointer; font-size: 1rem; font-weight: bold; margin-top: 10px;}
         button.submit-btn:hover { background-color: #1a252f; }
+        
+        #authError { color: #e74c3c; font-size: 0.9rem; font-weight: 600; text-align: center; margin: 0; display: none; }
 
-        /* MOBILE OPTIMIZATION */
         @media (max-width: 600px) {
             #postsContainer, .quick-index-grid { grid-template-columns: 1fr; gap: 1rem; }
             article { padding: 1rem; }
             .post-cover-image { aspect-ratio: 21/9; }
             .post-footer { opacity: 1; bottom: 1rem; right: 1rem; }
+            .auth-section { right: 1rem; top: 1rem; }
         }
     </style>
 </head>
@@ -121,6 +106,11 @@
     <header>
         <h1>Welcome to My Blog</h1>
         <p>Where I share my coding journey.</p>
+        
+        <div class="auth-section">
+            <span id="welcomeMessage" style="display: none;"></span>
+            <button id="headerAuthBtn" class="auth-btn">Login</button>
+        </div>
     </header>
 
     <main>
@@ -137,31 +127,29 @@
         </div>
 
         <hr class="section-divider">
-
         <div id="postsContainer"></div>
     </main>
 
-    <div id="readModalOverlay">
-        <div class="read-container">
-            <div class="read-header">
-                <button class="back-btn" onclick="closeReadView()">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-                    Back to Feed
-                </button>
+    <div id="authModalOverlay" class="modal-overlay">
+        <section class="form-section" style="max-width: 400px;">
+            <div class="modal-header">
+                <h2 id="authTitle">Login</h2>
+                <button id="closeAuthBtn" class="close-btn">&times;</button>
             </div>
             
-            <h1 id="readTitle"></h1>
-            <img id="readCover" src="" alt="Cover">
-            <div id="readContent"></div>
-
-            <div class="more-posts-section">
-                <h3>Read More</h3>
-                <div id="morePostsContainer" class="more-posts-grid"></div>
+            <div class="auth-toggle">
+                <button id="tabLogin" class="active">Login</button>
+                <button id="tabRegister">Register</button>
             </div>
-        </div>
+
+            <p id="authError"></p>
+            <input type="text" id="authUsername" placeholder="Username">
+            <input type="password" id="authPassword" placeholder="Password">
+            <button id="submitAuthBtn" class="submit-btn">Login</button>
+        </section>
     </div>
 
-    <button id="fabBtn" data-tooltip="Create Post">
+    <button id="fabBtn" title="Create Post">
         <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
     </button>
 
@@ -179,16 +167,158 @@
         </section>
     </div>
 
+    <div id="readModalOverlay">
+        <div class="read-container">
+            <div class="read-header">
+                <button class="back-btn" onclick="closeReadView()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                    Back to Feed
+                </button>
+            </div>
+            <h1 id="readTitle"></h1>
+            <img id="readCover" src="" alt="Cover">
+            <div id="readContent"></div>
+            <div class="more-posts-section">
+                <h3>Read More</h3>
+                <div id="morePostsContainer" class="more-posts-grid"></div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
     <script>
-        const SERVER_URL = "http://localhost:5000/api/posts";
+        const SERVER_URL = "http://localhost:5000/api";
         let allPosts = []; 
         let editingPostId = null; 
-        
-        // NEW: Variables to track the Index Box state
         let isIndexExpanded = false;
         const INITIAL_INDEX_LIMIT = 12;
 
+        // -------------------------------------- 
+        // NEW: AUTHENTICATION STATE LOGIC
+        // -------------------------------------- 
+        let currentToken = localStorage.getItem('token');
+        let currentUsername = localStorage.getItem('username');
+        let isLoginMode = true;
+
+        function updateAuthStateUI() {
+            const headerBtn = document.getElementById('headerAuthBtn');
+            const welcomeMsg = document.getElementById('welcomeMessage');
+            const fabBtn = document.getElementById('fabBtn');
+
+            if (currentToken) {
+                // User IS logged in
+                headerBtn.innerText = "Logout";
+                welcomeMsg.innerText = `Hi, ${currentUsername}!`;
+                welcomeMsg.style.display = "inline";
+                fabBtn.style.display = "flex"; // Show the Create button
+            } else {
+                // User IS NOT logged in
+                headerBtn.innerText = "Login";
+                welcomeMsg.style.display = "none";
+                fabBtn.style.display = "none"; // Hide the Create button
+            }
+            // Re-render posts to show/hide edit and delete icons
+            renderPosts(allPosts);
+        }
+
+        // -------------------------------------- 
+        // NEW: AUTHENTICATION MODAL LOGIC
+        // -------------------------------------- 
+        const authModal = document.getElementById('authModalOverlay');
+        const tabLogin = document.getElementById('tabLogin');
+        const tabRegister = document.getElementById('tabRegister');
+        const authTitle = document.getElementById('authTitle');
+        const submitAuthBtn = document.getElementById('submitAuthBtn');
+        const authError = document.getElementById('authError');
+
+        document.getElementById('headerAuthBtn').addEventListener('click', () => {
+            if (currentToken) {
+                // Handle Logout
+                localStorage.removeItem('token');
+                localStorage.removeItem('username');
+                currentToken = null;
+                currentUsername = null;
+                updateAuthStateUI();
+            } else {
+                // Open Login Modal
+                authModal.classList.add('active');
+                document.getElementById('authUsername').value = "";
+                document.getElementById('authPassword').value = "";
+                authError.style.display = "none";
+            }
+        });
+
+        document.getElementById('closeAuthBtn').addEventListener('click', () => authModal.classList.remove('active'));
+
+        // Switch to Login Tab
+        tabLogin.addEventListener('click', () => {
+            isLoginMode = true;
+            tabLogin.classList.add('active');
+            tabRegister.classList.remove('active');
+            authTitle.innerText = "Login";
+            submitAuthBtn.innerText = "Login";
+            authError.style.display = "none";
+        });
+
+        // Switch to Register Tab
+        tabRegister.addEventListener('click', () => {
+            isLoginMode = false;
+            tabRegister.classList.add('active');
+            tabLogin.classList.remove('active');
+            authTitle.innerText = "Create Account";
+            submitAuthBtn.innerText = "Register";
+            authError.style.display = "none";
+        });
+
+        // Handle Form Submission (Login or Register)
+        submitAuthBtn.addEventListener('click', async () => {
+            const usernameVal = document.getElementById('authUsername').value;
+            const passwordVal = document.getElementById('authPassword').value;
+
+            if (!usernameVal || !passwordVal) {
+                authError.innerText = "Please fill in all fields.";
+                authError.style.display = "block";
+                return;
+            }
+
+            const endpoint = isLoginMode ? "/login" : "/register";
+            
+            try {
+                const response = await fetch(SERVER_URL + endpoint, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ username: usernameVal, password: passwordVal })
+                });
+                const data = await response.json();
+
+                if (!response.ok) {
+                    authError.innerText = data.message;
+                    authError.style.display = "block";
+                } else {
+                    if (isLoginMode) {
+                        // Save the VIP Wristband (Token)
+                        localStorage.setItem('token', data.token);
+                        localStorage.setItem('username', data.username);
+                        currentToken = data.token;
+                        currentUsername = data.username;
+                        authModal.classList.remove('active');
+                        updateAuthStateUI();
+                    } else {
+                        // Registration success, switch to login mode automatically
+                        alert("Registration successful! Please log in.");
+                        tabLogin.click(); 
+                    }
+                }
+            } catch (error) {
+                authError.innerText = "Server error. Please try again.";
+                authError.style.display = "block";
+            }
+        });
+
+
+        // -------------------------------------- 
+        // QUILL EDITOR & POSTS LOGIC
+        // -------------------------------------- 
         var quill = new Quill('#editor-container', {
             theme: 'snow',
             placeholder: 'Write your masterpiece here...',
@@ -196,25 +326,19 @@
         });
 
         async function loadPosts() {
-            let response = await fetch(SERVER_URL);
+            let response = await fetch(SERVER_URL + "/posts");
             allPosts = await response.json(); 
-            
-            // Draw both the Index and the Detailed Grid
             renderQuickIndex(allPosts);
             renderPosts(allPosts); 
+            updateAuthStateUI(); // Ensure UI matches login state on initial load
         }
 
-        // -------------------------------------- 
-        // NEW: RENDER QUICK INDEX
-        // -------------------------------------- 
         function renderQuickIndex(postsToRender) {
             let container = document.getElementById("quickIndexContainer");
             let toggleBtn = document.getElementById("toggleIndexBtn");
             let section = document.getElementById("quickIndexSection");
-            
             container.innerHTML = ""; 
 
-            // Hide the entire index section if there are no posts
             if (postsToRender.length === 0) {
                 section.style.display = "none";
                 return;
@@ -222,40 +346,24 @@
                 section.style.display = "block";
             }
 
-            // Figure out how many to show based on the 'Expand' state
             let displayCount = isIndexExpanded ? postsToRender.length : INITIAL_INDEX_LIMIT;
-            let postsToShow = postsToRender.slice(0, displayCount);
-
-            // Draw the horizontal rectangle boxes
-            postsToShow.forEach(post => {
-                let pillHTML = `
-                    <div class="index-item" onclick="openReadView('${post._id}')" title="${post.title}">
-                        ${post.title}
-                    </div>
-                `;
-                container.innerHTML += pillHTML;
+            postsToRender.slice(0, displayCount).forEach(post => {
+                container.innerHTML += `<div class="index-item" onclick="openReadView('${post._id}')" title="${post.title}">${post.title}</div>`;
             });
 
-            // Handle the "Show More" / "Show Less" button logic
             if (postsToRender.length <= INITIAL_INDEX_LIMIT) {
-                toggleBtn.style.display = "none"; // Hide button if we have 12 or fewer posts
+                toggleBtn.style.display = "none";
             } else {
                 toggleBtn.style.display = "block";
                 toggleBtn.innerText = isIndexExpanded ? "Show Less" : `Show More (${postsToRender.length - INITIAL_INDEX_LIMIT} more)`;
             }
         }
 
-        // Toggle button click event
         document.getElementById("toggleIndexBtn").addEventListener("click", () => {
             isIndexExpanded = !isIndexExpanded;
-            // Trigger a dummy search event to re-render with the current search filter applied
             document.getElementById('searchInput').dispatchEvent(new Event('input'));
         });
 
-
-        // -------------------------------------- 
-        // RENDER DETAILED GRID
-        // -------------------------------------- 
         function renderPosts(postsToRender) {
             let container = document.getElementById("postsContainer");
             container.innerHTML = ""; 
@@ -268,49 +376,42 @@
             postsToRender.forEach(post => {
                 let imageHTML = post.imageUrl ? `<img src="${post.imageUrl}" class="post-cover-image" alt="Cover Image">` : '';
                 
-                let newPostHTML = `
+                // NEW: Only render the edit/delete footer if the user has a token
+                let footerHTML = currentToken ? `
+                    <div class="post-footer" style="display: flex;">
+                        <button class="icon-btn edit-btn" onclick="editPost('${post._id}', event)" title="Edit">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                        </button>
+                        <button class="icon-btn delete-btn" onclick="deletePost('${post._id}', event)" title="Delete">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                        </button>
+                    </div>
+                ` : '';
+
+                container.innerHTML += `
                     <article onclick="openReadView('${post._id}')">
                         ${imageHTML}
                         <h2>${post.title}</h2>
                         <div class="post-content-preview">${post.content}</div>
-                        
-                        <div class="post-footer">
-                            <button class="icon-btn edit-btn" onclick="editPost('${post._id}', event)" title="Edit">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
-                            </button>
-                            <button class="icon-btn delete-btn" onclick="deletePost('${post._id}', event)" title="Delete">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
-                            </button>
-                        </div>
+                        ${footerHTML}
                     </article>
                 `;
-                container.innerHTML += newPostHTML;
             });
         }
 
-        // Live Search updates BOTH the Index and the Grid instantly
         document.getElementById('searchInput').addEventListener('input', function(e) {
             let searchTerm = e.target.value.toLowerCase();
-            
             let filteredPosts = allPosts.filter(post => {
-                return post.title.toLowerCase().includes(searchTerm) || 
-                       post.content.toLowerCase().includes(searchTerm);
+                return post.title.toLowerCase().includes(searchTerm) || post.content.toLowerCase().includes(searchTerm);
             });
-            
             renderQuickIndex(filteredPosts);
             renderPosts(filteredPosts);
         });
 
-        loadPosts();
-
-        // -------------------------------------- 
-        // READING VIEW LOGIC
-        // -------------------------------------- 
         function openReadView(id) {
             let post = allPosts.find(p => p._id === id);
             document.getElementById('readTitle').innerText = post.title;
             document.getElementById('readContent').innerHTML = post.content;
-            
             let coverImg = document.getElementById('readCover');
             if (post.imageUrl) {
                 coverImg.src = post.imageUrl;
@@ -330,18 +431,12 @@
                     </div>
                 `;
             });
-
             document.getElementById('readModalOverlay').classList.add('active');
             document.getElementById('readModalOverlay').scrollTo(0, 0);
         }
 
-        function closeReadView() {
-            document.getElementById('readModalOverlay').classList.remove('active');
-        }
+        function closeReadView() { document.getElementById('readModalOverlay').classList.remove('active'); }
 
-        // -------------------------------------- 
-        // CREATE / EDIT / DELETE LOGIC
-        // -------------------------------------- 
         const modal = document.getElementById('modalOverlay');
         function openModal(isEditing = false) {
             modal.classList.add('active'); 
@@ -374,11 +469,10 @@
             if (imageFile) formData.append("image", imageFile); 
 
             if (editingPostId === null) {
-                await fetch(SERVER_URL, { method: "POST", body: formData });
+                await fetch(SERVER_URL + "/posts", { method: "POST", body: formData });
             } else {
-                await fetch(SERVER_URL + "/" + editingPostId, { method: "PUT", body: formData });
+                await fetch(SERVER_URL + "/posts/" + editingPostId, { method: "PUT", body: formData });
             }
-            
             document.getElementById("searchInput").value = "";
             closeModal(); 
             loadPosts();  
@@ -399,11 +493,13 @@
         async function deletePost(id, event) {
             event.stopPropagation(); 
             if (confirm("Are you sure you want to permanently delete this post?")) {
-                await fetch(SERVER_URL + "/" + id, { method: "DELETE" });
+                await fetch(SERVER_URL + "/posts/" + id, { method: "DELETE" });
                 document.getElementById("searchInput").value = "";
                 loadPosts(); 
             }
         }
+
+        loadPosts();
     </script>
 </body>
 </html>
