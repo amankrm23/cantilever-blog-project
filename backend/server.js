@@ -42,7 +42,7 @@ const upload = multer({ storage: storage });
 // CONNECT TO MONGODB
 // ----------------------------------------------------
 // Correct Format:
-mongoose.connect('mongodb+srv://amankrmurmu7777_db_user:'nA0FJ2LwvEkVD709'@cluster0.fghilmb.mongodb.net/blog_app?retryWrites=true&w=majority')
+mongoose.connect('mongodb+srv://amankrmurmu7777_db_user:nA0FJ2LwvEkVD709@cluster0.fghilmb.mongodb.net/blog_app?retryWrites=true&w=majority')
     .then(() => console.log("MongoDB is successfully connected!"))
     .catch((err) => console.log("Database connection error: ", err));
 
