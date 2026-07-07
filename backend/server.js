@@ -41,7 +41,7 @@ const upload = multer({ storage: storage });
 // ----------------------------------------------------
 // CONNECT TO MONGODB
 // ----------------------------------------------------
-mongoose.connect('mongodb://127.0.0.1:27017/blog_app')
+mongodb+srv://amankrmurmu7777_db_user:<db_password>@cluster0.fghilmb.mongodb.net/?appName=Cluster0
     .then(() => console.log("MongoDB is successfully connected!"))
     .catch((err) => console.log("Database connection error: ", err));
 
@@ -154,6 +154,7 @@ app.delete('/api/posts/:id', async (req, res) => {
     }
 });
 
-app.listen(5000, () => {
-    console.log("Server is running on http://localhost:5000");
+    const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });
