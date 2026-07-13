@@ -121,7 +121,7 @@ app.post('/api/posts', upload.single('image'), async (req, res) => {
     try {
         let imagePath = null;
         if (req.file) {
-            imagePath = `http://localhost:5000/uploads/${req.file.filename}`;
+            imagePath = `https://cantilever-blog-project.onrender.com/uploads/${req.file.filename}`;
         }
         const newPost = await Post.create({
             title: req.body.title,
